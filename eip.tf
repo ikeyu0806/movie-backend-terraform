@@ -1,4 +1,4 @@
-resource "aws_eip" "nat_1a" {
+resource "aws_eip" "movie-backend-nat-1a" {
   vpc = true
 
   tags = {
@@ -6,7 +6,7 @@ resource "aws_eip" "nat_1a" {
   }
 }
 
-resource "aws_eip" "nat_1b" {
+resource "aws_eip" "movie-backend-nat-1b" {
   vpc = true
 
   tags = {
@@ -14,7 +14,7 @@ resource "aws_eip" "nat_1b" {
   }
 }
 
-resource "aws_eip" "nat_1c" {
+resource "aws_eip" "movie-backend-nat-1c" {
   vpc = true
 
   tags = {
@@ -22,7 +22,7 @@ resource "aws_eip" "nat_1c" {
   }
 }
 
-resource "aws_eip" "nat_1d" {
+resource "aws_eip" "movie-backend-nat-1d" {
   vpc = true
 
   tags = {

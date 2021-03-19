@@ -1,5 +1,5 @@
-resource "aws_subnet" "public_1a" {
-  vpc_id = aws_vpc.main.id
+resource "aws_subnet" "movie-backend-public-1a" {
+  vpc_id = aws_vpc.movie-backend.id
 
   availability_zone = "ap-northeast-1a"
 
@@ -10,8 +10,8 @@ resource "aws_subnet" "public_1a" {
   }
 }
 
-resource "aws_subnet" "public_1c" {
-  vpc_id = aws_vpc.main.id
+resource "aws_subnet" "movie-backend-public-1c" {
+  vpc_id = aws_vpc.movie-backend.id
 
   availability_zone = "ap-northeast-1c"
 
@@ -22,8 +22,8 @@ resource "aws_subnet" "public_1c" {
   }
 }
 
-resource "aws_subnet" "public_1d" {
-  vpc_id = aws_vpc.main.id
+resource "aws_subnet" "movie-backend-public-1d" {
+  vpc_id = aws_vpc.movie-backend.id
 
   availability_zone = "ap-northeast-1d"
 
@@ -34,8 +34,8 @@ resource "aws_subnet" "public_1d" {
   }
 }
 
-resource "aws_subnet" "private_1a" {
-  vpc_id = aws_vpc.main.id
+resource "aws_subnet" "movie-backend-private-1a" {
+  vpc_id = aws_vpc.movie-backend.id
 
   availability_zone = "ap-northeast-1a"
   cidr_block        = "10.0.10.0/24"
@@ -45,8 +45,8 @@ resource "aws_subnet" "private_1a" {
   }
 }
 
-resource "aws_subnet" "private_1c" {
-  vpc_id = aws_vpc.main.id
+resource "aws_subnet" "movie-backend-private-1c" {
+  vpc_id = aws_vpc.movie-backend.id
 
   availability_zone = "ap-northeast-1c"
   cidr_block        = "10.0.20.0/24"
@@ -56,8 +56,8 @@ resource "aws_subnet" "private_1c" {
   }
 }
 
-resource "aws_subnet" "private_1d" {
-  vpc_id = aws_vpc.main.id
+resource "aws_subnet" "movie-backend-private-1d" {
+  vpc_id = aws_vpc.movie-backend.id
 
   availability_zone = "ap-northeast-1d"
   cidr_block        = "10.0.30.0/24"

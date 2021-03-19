@@ -1,5 +1,5 @@
-resource "aws_security_group_rule" "alb_http" {
-  security_group_id = aws_security_group.alb.id
+resource "aws_security_group_rule" "movie-backend-alb-http" {
+  security_group_id = aws_security_group.movie-backend-alb.id
 
   type = "ingress"
 
@@ -10,8 +10,8 @@ resource "aws_security_group_rule" "alb_http" {
   cidr_blocks = ["0.0.0.0/0"]
 }
 
-resource "aws_security_group_rule" "alb_http_movie_backend" {
-  security_group_id = aws_security_group.alb.id
+resource "aws_security_group_rule" "movie_backend-api-alb-http" {
+  security_group_id = aws_security_group.movie-backend-alb.id
 
   type = "ingress"
 
@@ -22,8 +22,8 @@ resource "aws_security_group_rule" "alb_http_movie_backend" {
   cidr_blocks = ["0.0.0.0/0"]
 }
 
-resource "aws_security_group_rule" "ecs" {
-  security_group_id = aws_security_group.ecs.id
+resource "aws_security_group_rule" "movie-backend-ecs" {
+  security_group_id = aws_security_group.movie-backend-ecs.id
 
   type = "ingress"
   from_port = 80
@@ -33,8 +33,8 @@ resource "aws_security_group_rule" "ecs" {
   cidr_blocks = ["10.0.0.0/16"]
 }
 
-resource "aws_security_group_rule" "ecs_movie_backend" {
-  security_group_id = aws_security_group.ecs.id
+resource "aws_security_group_rule" "movie_backend-api-ecs" {
+  security_group_id = aws_security_group.movie-backend-ecs.id
 
   type = "ingress"
   from_port = 8080

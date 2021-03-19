@@ -1,8 +1,8 @@
-resource "aws_security_group" "ecs" {
+resource "aws_security_group" "movie-backend-ecs" {
   name        = "movie-backend-ecs"
   description = "movie-backend ecs"
 
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = aws_vpc.movie-backend.id
 
   egress {
     from_port   = 0
@@ -16,10 +16,10 @@ resource "aws_security_group" "ecs" {
   }
 }
 
-resource "aws_security_group" "alb" {
+resource "aws_security_group" "movie-backend-alb" {
   name        = "movie-backend-alb"
   description = "movie-backend alb"
-  vpc_id      = aws_vpc.main.id
+  vpc_id      = aws_vpc.movie-backend.id
 
   egress {
     from_port   = 0

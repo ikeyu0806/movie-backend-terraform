@@ -1,23 +1,23 @@
-resource "aws_ecs_cluster" "main" {
+resource "aws_ecs_cluster" "movie-backend" {
   name = "movie_backend"
 }
 
-resource "aws_ecs_service" "main" {
+resource "aws_ecs_service" "movie-backend" {
   name = "movie-backend"
 
-  depends_on = [aws_lb_listener_rule.main, aws_lb_listener_rule.movie-backend]
+  depends_on = [aws_lb_listener_rule.movie-backend, aws_lb_listener_rule.movie-backend-api]
 
-  cluster = aws_ecs_cluster.main.name
+  cluster = aws_ecs_cluster.movie-backend.name
 
   launch_type = "FARGATE"
 
   desired_count = "1"
 
-  task_definition = aws_ecs_task_definition.main.arn
+  task_definition = aws_ecs_task_definition.movie-backend.arn
 
   network_configuration {
-    subnets         = [aws_subnet.private_1a.id, aws_subnet.private_1c.id, aws_subnet.private_1d.id]
-    security_groups = [aws_security_group.ecs.id]
+    subnets         = [aws_subnet.movie-backend-private-1a.id, aws_subnet.movie-backend-private-1c.id, aws_subnet.movie-backend-private-1d.id]
+    security_groups = [aws_security_group.movie-backend-ecs.id]
   }
 
   load_balancer {
@@ -27,7 +27,7 @@ resource "aws_ecs_service" "main" {
   }
 }
 
-resource "aws_ecs_task_definition" "main" {
+resource "aws_ecs_task_definition" "movie-backend" {
   family = "movie_backend"
 
   requires_compatibilities = ["FARGATE"]
