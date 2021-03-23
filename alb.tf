@@ -92,11 +92,23 @@ resource "aws_lb_listener" "movie-backend-api" {
   default_action {
     type             = "fixed-response"
 
-    fixed_response {
-      content_type = "text/plain"
-      status_code  = "200"
-      message_body = "ok"
+    redirect {
+      port        = "443"
+      protocol    = "HTTPS"
+      status_code = "HTTP_301"
     }
   }
 }
 
+resource "aws_alb_listener" "movie-backend-alb-443" {
+  load_balancer_arn = aws_lb.movie-backend-alb.arn
+  port              = "443"
+  protocol          = "HTTPS"
+  ssl_policy        = "ELBSecurityPolicy-2016-08"
+  certificate_arn   = aws_acm_certificate.movie-backend-acm.arn
+
+  default_action {
+    type             = "forward"
+    target_group_arn = aws_lb_target_group.movie-backend.arn
+  }
+}

@@ -32,3 +32,9 @@ resource "aws_security_group" "movie-backend-alb" {
     Name = "movie-backend-alb"
   }
 }
+
+resource "aws_security_group" "movie-backend-rds-sg" {
+  description = "RDS security group for movie service rds"
+  name        = "movie-rds-sg"
+  vpc_id      = aws_vpc.movie-backend.id
+}
