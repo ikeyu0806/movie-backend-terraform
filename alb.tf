@@ -90,7 +90,7 @@ resource "aws_lb_listener" "movie-backend-api" {
   load_balancer_arn = aws_lb.movie-backend-alb.arn
 
   default_action {
-    type             = "fixed-response"
+    type          = "redirect"
 
     redirect {
       port        = "443"

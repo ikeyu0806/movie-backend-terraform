@@ -49,6 +49,20 @@ resource "aws_ecs_task_definition" "movie-backend" {
         "containerPort": 8080,
         "hostPort": 8080
       }
+    ],
+    "environment": [
+      {
+        "valueFrom": "${aws_db_instance.movie-backend.endpoint}",
+        "name": "RDS_ENDPOINT"
+      },
+      {
+        "valueFrom": "${var.db_user}",
+        "name": "DB_USER_NAME"
+      },
+      {
+        "valueFrom": "${var.db_pass}",
+        "name": "DB_PASSWORD"
+      }
     ]
   }
 ]
