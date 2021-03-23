@@ -53,15 +53,19 @@ resource "aws_ecs_task_definition" "movie-backend" {
     "environment": [
       {
         "valueFrom": "${aws_db_instance.movie-backend.endpoint}",
-        "name": "RDS_ENDPOINT"
+        "name": "DB_HOST"
       },
       {
         "valueFrom": "${var.db_user}",
-        "name": "DB_USER_NAME"
+        "name": "DB_USER"
       },
       {
         "valueFrom": "${var.db_pass}",
         "name": "DB_PASSWORD"
+      },
+      {
+        "valueFrom": "${aws_db_instance.movie-backend.name}",
+        "name": "DB_NAME"
       }
     ]
   }
