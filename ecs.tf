@@ -43,7 +43,7 @@ resource "aws_ecs_task_definition" "movie-backend" {
 [
   {
     "name": "movie_backend",
-    "image": "public.ecr.aws/e9z3g6v3/movie-test:latest",
+    "image": "public.ecr.aws/e9z3g6v3/movie-info-backend:latest",
     "portMappings": [
       {
         "containerPort": 8080,
