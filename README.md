@@ -73,3 +73,6 @@ terraform workspace list
 terraform workspace new production
 terraform env select production
 ```
+
+# Migration
+DBのMigrationを実行するECSタスクの定義はterraformで作成されますが、タスク実行は現状手動で行う必要があります。
