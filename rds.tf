@@ -8,8 +8,8 @@ resource "aws_db_instance" "movie-backend" {
   engine_version          = "5.7"
   instance_class          = "db.t2.micro"
   name                    = "movieInfo"
-  username                = "root"
-  password                = "$db_pass"
+  username                = var.db_user
+  password                = var.db_pass
   parameter_group_name    = "default.mysql5.7"
   skip_final_snapshot     = true
   port                    = 3306

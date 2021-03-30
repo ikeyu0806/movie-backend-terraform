@@ -11,7 +11,7 @@ resource "aws_ecs_service" "movie-backend" {
 
   launch_type = "FARGATE"
 
-  desired_count = "1"
+  desired_count = "2"
 
   task_definition = aws_ecs_task_definition.movie-backend.arn
 
@@ -52,22 +52,71 @@ resource "aws_ecs_task_definition" "movie-backend" {
     ],
     "environment": [
       {
-        "valueFrom": "${aws_db_instance.movie-backend.endpoint}",
-        "name": "DB_HOST"
+        "name": "DB_HOST",
+        "value": "${aws_db_instance.movie-backend.endpoint}"
       },
       {
-        "valueFrom": "${var.db_user}",
-        "name": "DB_USER"
+        "name": "DB_USER",
+        "value": "${var.db_user}"
       },
       {
-        "valueFrom": "${var.db_pass}",
-        "name": "DB_PASSWORD"
+        "name": "DB_PASSWORD",
+        "value": "${var.db_pass}"
       },
       {
-        "valueFrom": "${aws_db_instance.movie-backend.name}",
-        "name": "DB_NAME"
+        "name": "DB_NAME",
+        "value": "${aws_db_instance.movie-backend.name}"
+      },
+      {
+        "name": "DATA_SOURCE",
+        "value": "${var.db_user}:${var.db_pass}@tcp(${aws_db_instance.movie-backend.endpoint})/${aws_db_instance.movie-backend.name}?charset=utf8&parseTime=True&loc=Local"
       }
-    ]
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-region": "ap-northeast-1",
+        "awslogs-stream-prefix": "movie-backend",
+        "awslogs-group": "/ecs/movie-backend"
+      }
+    }
+  }
+]
+EOL
+}
+
+resource "aws_ecs_task_definition" "movie-db-migration" {
+  family = "movie_db_migration"
+
+  requires_compatibilities = ["FARGATE"]
+
+  cpu    = "256"
+  memory = "512"
+
+  network_mode = "awsvpc"
+
+  execution_role_arn    = aws_iam_role.ecs_task_execution_role.arn
+
+  container_definitions = <<EOL
+[
+  {
+    "name": "movie_db_migrate",
+    "image": "public.ecr.aws/e9z3g6v3/movie-info-backend:latest",
+    "command": ["sql-migrate", "up"],
+    "environment": [
+      {
+        "name": "DATA_SOURCE",
+        "value": "${var.db_user}:${var.db_pass}@tcp(${aws_db_instance.movie-backend.endpoint})/${aws_db_instance.movie-backend.name}?charset=utf8&parseTime=True&loc=Local"
+      }
+    ],
+    "logConfiguration": {
+      "logDriver": "awslogs",
+      "options": {
+        "awslogs-region": "ap-northeast-1",
+        "awslogs-stream-prefix": "movie-db-migration",
+        "awslogs-group": "/ecs/movie-db-migration"
+      }
+    }
   }
 ]
 EOL
