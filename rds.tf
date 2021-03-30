@@ -15,4 +15,5 @@ resource "aws_db_instance" "movie-backend" {
   port                    = 3306
   vpc_security_group_ids  = [aws_security_group.movie-backend-rds-sg.id]
   db_subnet_group_name    = aws_db_subnet_group.movie-backend-db-subnet.name
+  publicly_accessible     = true
 }
