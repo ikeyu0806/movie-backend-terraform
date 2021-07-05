@@ -11,7 +11,9 @@ resource "aws_ecs_service" "movie-backend" {
 
   launch_type = "FARGATE"
 
-  desired_count = "2"
+  desired_count = "1"
+
+  enable_execute_command = true
 
   task_definition = aws_ecs_task_definition.movie-backend.arn
 
