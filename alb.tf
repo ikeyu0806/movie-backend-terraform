@@ -3,26 +3,11 @@ resource "aws_lb" "movie-backend-alb" {
   name               = "movie-backend"
 
   security_groups = [aws_security_group.movie-backend-alb.id]
-  subnets         = [aws_subnet.movie-backend-public-1a.id, aws_subnet.movie-backend-public-1c.id, aws_subnet.movie-backend-public-1d.id]
+  subnets         = [aws_subnet.movie-backend-public-1a.id, aws_subnet.movie-backend-public-1c.id]
 }
 
-resource "aws_lb_target_group" "movie-backend" {
-  name = "movie-backend-alb"
-
-  vpc_id = aws_vpc.movie-backend.id
-
-  port        = 80
-  protocol    = "HTTP"
-  target_type = "ip"
-
-  health_check {
-    port = 80
-    path = "/"
-  }
-}
-
-resource "aws_lb_target_group" "movie-backend-api" {
-  name = "movie-backend"
+resource "aws_lb_target_group" "blue" {
+  name = "movie-backend-blue"
 
   vpc_id = aws_vpc.movie-backend.id
 
@@ -36,27 +21,28 @@ resource "aws_lb_target_group" "movie-backend-api" {
   }
 }
 
+resource "aws_lb_target_group" "green" {
+  name = "movie-backend-green"
+
+  vpc_id = aws_vpc.movie-backend.id
+
+  port        = 8080
+  protocol    = "HTTP"
+  target_type = "ip"
+
+  health_check {
+    port = 8080
+    path = "/"
+  }
+}
+
+
 resource "aws_lb_listener_rule" "movie-backend" {
   listener_arn = aws_lb_listener.movie-backend.arn
 
   action {
     type             = "forward"
-    target_group_arn = aws_lb_target_group.movie-backend.id
-  }
-
-  condition {
-    path_pattern {
-      values = ["*"]
-    }
-  }
-}
-
-resource "aws_lb_listener_rule" "movie-backend-api" {
-  listener_arn = aws_lb_listener.movie-backend.arn
-
-  action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.movie-backend.id
+    target_group_arn = aws_lb_target_group.blue.id
   }
 
   condition {
@@ -67,7 +53,7 @@ resource "aws_lb_listener_rule" "movie-backend-api" {
 }
 
 resource "aws_lb_listener" "movie-backend" {
-  port              = "80"
+  port              = "8080"
   protocol          = "HTTP"
 
   load_balancer_arn = aws_lb.movie-backend-alb.arn
@@ -83,32 +69,16 @@ resource "aws_lb_listener" "movie-backend" {
   }
 }
 
-resource "aws_lb_listener" "movie-backend-api" {
-  port              = "8080"
-  protocol          = "HTTP"
+# 無効化中
+# resource "aws_alb_listener" "movie-backend-alb-443" {
+#   load_balancer_arn = aws_lb.movie-backend-alb.arn
+#   port              = "443"
+#   protocol          = "HTTPS"
+#   ssl_policy        = "ELBSecurityPolicy-2016-08"
+#   certificate_arn   = aws_acm_certificate.movie-backend-acm.arn
 
-  load_balancer_arn = aws_lb.movie-backend-alb.arn
-
-  default_action {
-    type          = "redirect"
-
-    redirect {
-      port        = "443"
-      protocol    = "HTTPS"
-      status_code = "HTTP_301"
-    }
-  }
-}
-
-resource "aws_alb_listener" "movie-backend-alb-443" {
-  load_balancer_arn = aws_lb.movie-backend-alb.arn
-  port              = "443"
-  protocol          = "HTTPS"
-  ssl_policy        = "ELBSecurityPolicy-2016-08"
-  certificate_arn   = aws_acm_certificate.movie-backend-acm.arn
-
-  default_action {
-    type             = "forward"
-    target_group_arn = aws_lb_target_group.movie-backend.arn
-  }
-}
+#   default_action {
+#     type             = "forward"
+#     target_group_arn = aws_lb_target_group.blue.arn
+#   }
+# }
