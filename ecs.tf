@@ -5,7 +5,9 @@ resource "aws_ecs_cluster" "movie-backend" {
 resource "aws_ecs_service" "movie-backend" {
   name = "movie-backend"
 
-  depends_on = [aws_lb_listener_rule.movie-backend, aws_lb_listener_rule.movie-backend-api]
+  depends_on = [aws_lb.movie-backend-alb,
+                aws_lb_listener.movie-backend,
+                aws_lb_listener_rule.movie-backend]
 
   cluster = aws_ecs_cluster.movie-backend.name
 
@@ -13,19 +15,23 @@ resource "aws_ecs_service" "movie-backend" {
 
   desired_count = "1"
 
-  enable_execute_command = true
+  # enable_execute_command = true
 
   task_definition = aws_ecs_task_definition.movie-backend.arn
 
   network_configuration {
-    subnets         = [aws_subnet.movie-backend-private-1a.id, aws_subnet.movie-backend-private-1c.id, aws_subnet.movie-backend-private-1d.id]
+    subnets         = [aws_subnet.movie-backend-private-1a.id, aws_subnet.movie-backend-private-1c.id]
     security_groups = [aws_security_group.movie-backend-ecs.id]
   }
 
   load_balancer {
-    target_group_arn = aws_lb_target_group.movie-backend.arn
+    target_group_arn = aws_lb_target_group.blue.arn
     container_name   = "movie_backend"
     container_port   = "8080"
+  }
+
+  deployment_controller {
+    type = "CODE_DEPLOY"
   }
 }
 
