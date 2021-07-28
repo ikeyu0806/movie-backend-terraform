@@ -25,7 +25,7 @@ resource "aws_security_group_rule" "movie_backend-api-alb-http" {
 resource "aws_security_group_rule" "movie-backend-ecs" {
   security_group_id = aws_security_group.movie-backend-ecs.id
 
-  type = "ingress"
+  type      = "ingress"
   from_port = 80
   to_port   = 80
   protocol  = "tcp"
@@ -36,7 +36,7 @@ resource "aws_security_group_rule" "movie-backend-ecs" {
 resource "aws_security_group_rule" "movie_backend-api-ecs" {
   security_group_id = aws_security_group.movie-backend-ecs.id
 
-  type = "ingress"
+  type      = "ingress"
   from_port = 8080
   to_port   = 8080
   protocol  = "tcp"

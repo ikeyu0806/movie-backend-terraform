@@ -4,8 +4,8 @@ resource "aws_codedeploy_app" "movie-backend" {
 }
 
 resource "aws_codedeploy_deployment_group" "movie-backend" {
-  deployment_group_name  = "movie-backend"
-  
+  deployment_group_name = "movie-backend"
+
   deployment_config_name = "CodeDeployDefault.ECSAllAtOnce"
   app_name               = aws_codedeploy_app.movie-backend.name
   service_role_arn       = aws_iam_role.codedeploy.arn

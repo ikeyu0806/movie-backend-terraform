@@ -53,13 +53,13 @@ resource "aws_lb_listener_rule" "movie-backend" {
 }
 
 resource "aws_lb_listener" "movie-backend" {
-  port              = "8080"
-  protocol          = "HTTP"
+  port     = "8080"
+  protocol = "HTTP"
 
   load_balancer_arn = aws_lb.movie-backend-alb.arn
 
   default_action {
-    type             = "fixed-response"
+    type = "fixed-response"
 
     fixed_response {
       content_type = "text/plain"

@@ -2,7 +2,7 @@ resource "aws_security_group" "movie-backend-ecs" {
   name        = "movie-backend-ecs"
   description = "movie-backend ecs"
 
-  vpc_id      = aws_vpc.movie-backend.id
+  vpc_id = aws_vpc.movie-backend.id
 
   egress {
     from_port   = 0
